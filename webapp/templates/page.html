@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+	<title>Send Message</title>
+</head>
+
+<body>
+	<h1>Send a friendly message!</h1>
+	<form method="POST">
+		<input name="message">
+		<input type="submit">
+	</form>
+
+	<h2>Sent messages:</h2>
+	{% for msg in msg_dict %}
+	<p>{{ msg_dict[msg] }}</p>
+	{% endfor %}
+</body>
+</html>
