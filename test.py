@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#env python
 # Display a runtext with double-buffering.
 from samplebase import SampleBase
 from rgbmatrix import graphics, RGBMatrix, RGBMatrixOptions
@@ -41,6 +42,15 @@ def prepare_canvas(offscreen_canvas, my_text):
 def display(offscreen_canvas, matrix):
     offscreen_canvas = matrix.SwapOnVSync(offscreen_canvas)
 
+def scroll_prep(offscreen_canvas, message): 
+    offscreen_canvas.Clear()
+    len = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, message)
+    pos -= 1
+    if (pos + len < 0):
+        pos = offscreen_canvas.width
+
+
+
 # Configuration for the matrix
 options = RGBMatrixOptions()
 options.rows = 32
@@ -79,18 +89,18 @@ try:
         
         #else:
         #    my_text = "None"
-        print messages[0]
-        offscreen_canvas.Clear()
-        prepare_canvas(offscreen_canvas, messages[0])
-        display(offscreen_canvas, matrix)
-        #len = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, my_text)
-        #pos = 0
-        #pos -= 1
-        #if (pos + len < 0):
-        #    pos = offscreen_canvas.width
 
-        time.sleep(1)
-        #offscreen_canvas = matrix.SwapOnVSync(offscreen_canvas)
+        print messages[0]
+
+        #offscreen_canvas.Clear()
+        #prepare_canvas(offscreen_canvas, messages[0])
+        #display(offscreen_canvas, matrix)
+        #time.sleep(1)
+        
+        scroll_prep(offscreen_canvas, matrix, message[0])
+        time.sleep(0.05)
+        display(offscreen_canvas, matrix)
+
 except KeyboardInterrupt():
     client.loop_stop()
     client.disconnect()
