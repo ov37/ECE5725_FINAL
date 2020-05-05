@@ -17,6 +17,7 @@ new_messages = 0
 messages = [""]
 first = 1
 my_text = ""
+pos = 0
 
 def init_client(client):
     client.on_connect = on_connect
@@ -42,7 +43,7 @@ def prepare_canvas(offscreen_canvas, my_text):
 def display(offscreen_canvas, matrix):
     offscreen_canvas = matrix.SwapOnVSync(offscreen_canvas)
 
-def scroll_prep(offscreen_canvas, message): 
+def scroll_prep(offscreen_canvas, message, pos): 
     offscreen_canvas.Clear()
     len = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, message)
     pos -= 1
@@ -97,7 +98,12 @@ try:
         #display(offscreen_canvas, matrix)
         #time.sleep(1)
         
-        scroll_prep(offscreen_canvas, matrix, message[0])
+        #scroll_prep(offscreen_canvas, messages[0], pos)
+        offscreen_canvas.Clear()
+        len = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, messages[0])
+        pos -= 1
+        if (pos + len < 0):
+            pos = offscreen_canvas.width
         time.sleep(0.05)
         display(offscreen_canvas, matrix)
 
