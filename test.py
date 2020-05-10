@@ -4,7 +4,7 @@
 from samplebase import SampleBase
 from rgbmatrix import graphics, RGBMatrix, RGBMatrixOptions
 import time
-
+from PIL import Image
 #import requests
 import json
 import paho.mqtt.client as mqtt
@@ -19,6 +19,9 @@ first = 1
 my_text = ""
 pos = 0
 
+heart = Image.open("heart.png").resize((15,15))
+smiley = Image.open("smiley.png").resize((15,15))
+
 def init_client(client):
     client.on_connect = on_connect
     client.on_message = on_message
@@ -31,7 +34,6 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
-    print 1
     messages[new_messages] = str(msg.payload)
     #new_messages += 1 
     #my_text = "Got" #str(msg.payload)
@@ -51,6 +53,16 @@ def scroll_prep(offscreen_canvas, message, pos):
         pos = offscreen_canvas.width
 
 
+def parseText(oddscreen_canvas, message):
+    if "<heart>" in message:
+        offscreen_canvas.SetImage(heart.convert('RGB'), 10, 15)
+        message = message[:message.find('<heart>')]
+    elif "<smiley>" in message:
+        offscreen_canvas.SetImage(smiley.convert('RGB'), 10, 15)
+        message = message[:message.find('<smiley>')]
+
+    return offscreen_canvas, message
+
 
 # Configuration for the matrix
 options = RGBMatrixOptions()
@@ -62,9 +74,10 @@ options.hardware_mapping = 'regular'
 matrix = RGBMatrix(options = options)
 offscreen_canvas = matrix.CreateFrameCanvas()
 font = graphics.Font()
-font.LoadFont("../../../fonts/6x10.bdf")
+font.LoadFont("../../../fonts/7x13.bdf")
 textColor = graphics.Color(204, 102, 255)
 pos = offscreen_canvas.width
+#image = Image.open("heart.png")
 
 client = mqtt.Client()
 init_client(client)
@@ -91,7 +104,7 @@ try:
         #else:
         #    my_text = "None"
 
-        print messages[0]
+        #print messages[0]
 
         #offscreen_canvas.Clear()
         #prepare_canvas(offscreen_canvas, messages[0])
@@ -100,10 +113,18 @@ try:
         
         #scroll_prep(offscreen_canvas, messages[0], pos)
         offscreen_canvas.Clear()
-        len = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, messages[0])
+        offscreen_canvas, message = parseText(offscreen_canvas, messages[0])
+
+        len = graphics.DrawText(offscreen_canvas, font, pos, 11, textColor, message)
         pos -= 1
         if (pos + len < 0):
             pos = offscreen_canvas.width
+
+        # can also use thumbnail() method
+        #image = image.resize((15, 15))#, Image.ANTIALIAS)
+
+        #offscreen_canvas.SetImage(image.convert('RGB'), 10, 15)
+        #offscreen_canvas = parseText(offscreen_canvas, messages[0])
         time.sleep(0.05)
         display(offscreen_canvas, matrix)
 
