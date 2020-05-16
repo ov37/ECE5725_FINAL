@@ -8,6 +8,13 @@ from PIL import Image
 #import requests
 import json
 import paho.mqtt.client as mqtt
+import RPi.GPIO as GPIO
+
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(6, GPIO.IN)
+present = 0
+
 
 MQTT_API_KEY = 'SESPS20JB3HS9FNO'
 READ_API_KEY = '2D4RRJVU70QBL1YS'
@@ -34,7 +41,8 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
-    messages[new_messages] = str(msg.payload)
+    #messages[new_messages] = str(msg.payload)
+    messages.append(str(msg.payload))
     #new_messages += 1 
     #my_text = "Got" #str(msg.payload)
 
@@ -47,9 +55,9 @@ def display(offscreen_canvas, matrix):
 
 def scroll_prep(offscreen_canvas, message, pos): 
     offscreen_canvas.Clear()
-    len = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, message)
+    length = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, message)
     pos -= 1
-    if (pos + len < 0):
+    if (pos + length < 0):
         pos = offscreen_canvas.width
 
 
@@ -82,6 +90,8 @@ pos = offscreen_canvas.width
 client = mqtt.Client()
 init_client(client)
 
+message_num = 2
+
 try:
     client.loop_start()
     #display(offscreen_canvas, matrix)
@@ -112,21 +122,32 @@ try:
         #time.sleep(1)
         
         #scroll_prep(offscreen_canvas, messages[0], pos)
-        offscreen_canvas.Clear()
-        offscreen_canvas, message = parseText(offscreen_canvas, messages[0])
+        x = GPIO.input(6)
+        if (x==0):
+            print("object detected")
+            present = 1
+        
+        if (present==1) and (len(messages)>2) and (message_num<len(messages)):
+            offscreen_canvas.Clear()
+            offscreen_canvas, message = parseText(offscreen_canvas, messages[message_num])
 
-        len = graphics.DrawText(offscreen_canvas, font, pos, 11, textColor, message)
-        pos -= 1
-        if (pos + len < 0):
-            pos = offscreen_canvas.width
-
+            length = graphics.DrawText(offscreen_canvas, font, pos, 11, textColor, message)
+            pos -= 1
+            if (pos + length < 0):
+                pos = offscreen_canvas.width
+                if (message_num + 1 >= len(messages)):
+                        present = 0
+                        offscreen_canvas.Clear()
+                message_num += 1
+            display(offscreen_canvas, matrix)
+ 
         # can also use thumbnail() method
         #image = image.resize((15, 15))#, Image.ANTIALIAS)
 
         #offscreen_canvas.SetImage(image.convert('RGB'), 10, 15)
         #offscreen_canvas = parseText(offscreen_canvas, messages[0])
         time.sleep(0.05)
-        display(offscreen_canvas, matrix)
+        #display(offscreen_canvas, matrix)
 
 except KeyboardInterrupt():
     client.loop_stop()
