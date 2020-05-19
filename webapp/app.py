@@ -7,7 +7,7 @@ import requests
 MQTT_API_KEY = 'SESPS20JB3HS9FNO'
 WRITE_API_KEY = '1TIH3KFRFKEWYA8L'
 channelID = "1040309"
-field_number = '1'
+field_number = '2'
 
 
 topic = "channels/" + channelID + "/publish/fields/field" + field_number + "/" + WRITE_API_KEY
