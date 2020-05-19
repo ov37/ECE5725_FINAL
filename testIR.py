@@ -135,7 +135,7 @@ font_time.LoadFont("../../../fonts/6x10.bdf")
 continuum = 0
 r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Ithaca,newyork&APPID=96b3bf9496927da84dec45410b24f72d')
 r = r.json()["weather"][0]["main"]
-
+#x = 1
 try:
     client.loop_start()
     #display(offscreen_canvas, matrix)
@@ -166,13 +166,14 @@ try:
         #time.sleep(1)
         
         #scroll_prep(offscreen_canvas, messages[0], pos)
-        
-        
-        x = GPIO.input(6)
-        if (x==0):
-            print("object detected")
-            present = 1
-        
+        '''
+        if(message_num<len(messages)):
+            x = GPIO.input(6)
+            if (x==0):
+                print("object detected")
+                present = 1
+        '''
+        present = 1
         if (present==1) and (len(messages)>2) and (message_num<len(messages)):
             offscreen_canvas.Clear()
             offscreen_canvas, message = parseText(offscreen_canvas, messages[message_num])
