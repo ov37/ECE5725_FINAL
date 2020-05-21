@@ -83,11 +83,14 @@
 
       <div class="row">
           <div class="col-md-4" style="text-align:center;">
-          <img class="img-rounded" src="pics/hey.PNG" alt="Generic placeholder image" width="360" height="360">
+          <img class="img-rounded" src="img/notification.png" alt="Generic placeholder image" width="763" height="360">
+<h4>Color-changing Notification Indicator</h4>
           </div>
 <div class="col-md-4" style="text-align:center;">
-          <img class="img-rounded" src="pics/website.png" alt="Generic placeholder image" width="763" height="360">
+          <img class="img-rounded" src="img/hey.PNG" alt="Generic placeholder image" width="360" height="360">
+<h4>Message and Image Displayed</h4>
           </div>
+
           <div class="col-md-8" style="font-size:18px;">
           <h2>Project Objective:</h2>
           <ul>
@@ -102,6 +105,13 @@
 
       <div style="text-align:center;">
               <h2>Design & Testing</h2>
+
+<div class="row" style="text-align:center;">
+          <div style="text-align:center;">
+              <img class="img-rounded" src="img/diagram.png" alt="Generic placeholder image" style="width:80%;">
+              <h4>Project group picture</h4>
+          </div>
+</div>
               <h3>MQTT</h3>
               <p style="text-align: left;padding: 0px 30px;">We began the project by working on sending and receiving text from one Pi to another over the internet. Initially, we were going to use TCP sockets to send data, but we quickly realized that there were already a lot of more user-friendly services that can serve as a communication medium. We decided to use Mathworks’s IOT service Thingspeak for sending and receiving messages because of its simplicity and prior experience with the platform. On Thingspeak, you can set up a channel for a project with however many fields necessary (in our case two because there were two people communication) for free that serves as your private address that you can query or send data to. At first we used HTTP GET and POST requests to move data, but while this worked, we realized it would mean constantly polling a certain field on our Thingspeak channel to see if a new message had been sent. Instead, we decided to MQTT which follows a subscriber-publisher model for communication. This way, we could publish a message to a field, which would activate a callback on the other Pi, notifying it of the new message, no extra polling or querying needed. 
 <br/><br/>
@@ -164,16 +174,16 @@ Finally, we could enable more users to send and receive messages. This would inv
               <h4>Project group picture</h4>
           </div>
           <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/a.png" alt="Generic placeholder image" width="240" height="240">
+              <img class="img-rounded" src="img/owen.png" alt="Generic placeholder image" width="240" height="240">
               <h3>Owen Valdescruz</h3>
               <p class="lead">ov37@cornell.edu</p>
-              <p>Designed the overall software architecture (Just being himself).
+              <p>Interfaced matrix and set up MQTT protocol.
           </div>
           <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/b.png" alt="Generic placeholder image" width="240" height="240">
+              <img class="img-rounded" src="img/diane.png" alt="Generic placeholder image" width="240" height="240">
               <h3>Diane Sutyak</h3>
               <p class="lead">dms486@cornell.edu</p>
-              <p>Tested the overall system.
+              <p>Integrated both distance sensors and built web server.
           </div>
       </div>
 
@@ -199,6 +209,7 @@ Finally, we could enable more users to send and receive messages. This would inv
           <a href="https://flask.palletsprojects.com/en/1.1.x/">Flask Server Guide</a><br>
           <a href="https://learn.adafruit.com/32x16-32x32-rgb-led-matrix/library">Alternate LED Matrix Library</a><br>
           <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
+          <a href="https://www.mathworks.com/help/thingspeak/mqtt-api.html">R-Pi GPIO Document</a><br>
 
       </div>
 
