@@ -76,18 +76,18 @@
 
       <div style="text-align:center;">
               <h2>Introduction</h2>
-              <p style="text-align: left;padding: 0px 30px;">This project consits of two nearly identical hardware set-ups each located in a different physical house. Each set up includes one Raspberry Pi 3, one RGB LED matrix, and one distance sensor. The system starts by a user visiting a web page on there browser created with Flask web server and hosted by the Pi on their home network (Fig 1). The web page invites the user to submit a message to be sent to their friend’s LED matrix. The friend’s matrix receives the message through a MQTT channel hosted by the cloud IOT service Thingspeak. Once the message is downloaded to the friend’s Pi, their matrix displays a notification indicator, signaling to the user that they have unread messages. To display the messages, the user can walk up to their matrix and once the distance sensor detects their presence, the messages will be scrolled across the matrix. The system is bidirectional i.e either party can send and receive messages, providing a interactive and personalized mode of communication.</p>
+              <p style="text-align: left;padding: 0px 30px;">This project consits of two nearly identical hardware set-ups each located in a different physical house. Each set up includes one Raspberry Pi 3, one RGB LED matrix, and one distance sensor. The system starts by a user visiting a web page on there browser created with Flask web server and hosted by the Pi on their home network. The web page invites the user to submit a message to be sent to their friend’s LED matrix. The friend’s matrix receives the message through a MQTT channel hosted by the cloud IOT service Thingspeak. Once the message is downloaded to the friend’s Pi, their matrix displays a notification indicator, signaling to the user that they have unread messages. To display the messages, the user can walk up to their matrix and once the distance sensor detects their presence, the messages will be scrolled across the matrix. The system is bidirectional i.e either party can send and receive messages, providing a interactive and personalized mode of communication.</p>
       </div>
 
     <hr id='obj'>
 
       <div class="row">
-          <div class="col-md-4" style="text-align:center;">
-          <img class="img-rounded" src="img/notification.png" alt="Generic placeholder image" width="763" height="360">
+          <div class="col-md-4" style="text-align:left;">
+          <img class="img-rounded" src="img/notification.png" alt="Generic placeholder image" width="420" height="420">
 <h4>Color-changing Notification Indicator</h4>
           </div>
-<div class="col-md-4" style="text-align:center;">
-          <img class="img-rounded" src="img/hey.PNG" alt="Generic placeholder image" width="360" height="360">
+<div class="col-md-4" style="text-align:right;">
+          <img class="img-rounded" src="img/hey.PNG" alt="Generic placeholder image" width="420" height="420">
 <h4>Message and Image Displayed</h4>
           </div>
 
@@ -109,7 +109,7 @@
 <div class="row" style="text-align:center;">
           <div style="text-align:center;">
               <img class="img-rounded" src="img/diagram.png" alt="Generic placeholder image" style="width:80%;">
-              <h4>Project group picture</h4>
+              <h4>System Diagram</h4>
           </div>
 </div>
               <h3>MQTT</h3>
@@ -125,6 +125,10 @@ One issue we encountered with MQTT is with the QoS of Thingspeak. When sending a
  
 Our setup supports the sending of four images: a heart, a smiley face, a frowny face, and a flower. To send one of these images, the user would simply type their message and include either &ltheart&gt, &ltsmiley&gt, &ltfrowny&gt, or &ltflower&gt in the message, including the &lt&gt brackets.
 </p>
+        <div style="text-align:center;">
+              <img class="img-rounded" src="img/website.png" alt="Generic placeholder image" style="width:80%;">
+              <h4>Project group picture</h4>
+          </div>
 <h3>Sensors</h3>
               <p style="text-align: left;padding: 0px 30px;">We chose to use an IR sensor and an ultrasonic sensor to detect the presence of a nearby person. That way, an LED matrix will not display a received message until it knows someone is around to read it. Owen used the IR sensor in his setup, and Diane used the ultrasound sensor in her setup. 
 <br/><br/>
