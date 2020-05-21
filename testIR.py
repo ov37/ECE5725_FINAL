@@ -83,20 +83,9 @@ def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
     messages.append(str(msg.payload))
 
-def prepare_canvas(offscreen_canvas, my_text):
-    graphics.DrawText(offscreen_canvas, font, 0, 10, textColor, my_text)
-    return offscreen_canvas
-
 # display canvas on matrix through double buffer
 def display(offscreen_canvas, matrix):
     offscreen_canvas = matrix.SwapOnVSync(offscreen_canvas)
-
-def scroll_prep(offscreen_canvas, message, pos): 
-    offscreen_canvas.Clear()
-    length = graphics.DrawText(offscreen_canvas, font, pos, 10, textColor, message)
-    pos -= 1
-    if (pos + length < 0):
-        pos = offscreen_canvas.width
 
 # parse message for image indicator, place image on canvas, and remove indicator text from message
 def parseText(offscreen_canvas, message):
