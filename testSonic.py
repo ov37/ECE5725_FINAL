@@ -13,9 +13,7 @@ import sys
 from datetime import datetime
 
 # set up IR sensor GPIO
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(6, GPIO.IN)
-present = 0
+present = 1
 
 # Thingspeak API keys
 MQTT_API_KEY = 'ENTER YOUR KEY'
