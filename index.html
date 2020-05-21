@@ -62,7 +62,7 @@
 
       <div class="starter-template">
         <h1>LED Matrix Messenger</h1>
-        <p class="lead">Really Awesome<br>A Project By Jane Doe.</p>
+        <p class="lead">Spring 2020<br>A Project By Owen and Diane</p>
       </div>
 
       <hr>
@@ -75,7 +75,7 @@
 
       <div style="text-align:center;">
               <h2>Introduction</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <p style="text-align: left;padding: 0px 30px;">This project consits of two nearly identical hardware set-ups each located in a different physcial house. Each set up includes one Raspberry Pi 3, one RGB LED matrix, and one distance sensor. The system starts by a user visiting a web page on there browser created with Flask web server and hosted by the Pi on their home network (Fig 1). The web page invites the user to submit a message to be sent to their friend’s LED matrix. The friend’s matrix recieves the message through a MQTT channel hosted by the cloud IOT service Thingspeak. Once the message is downloaded to the friend’s Pi, their matrix displays a notification indicator, signaling to the user that they have unread messages. To display the messages, the user can walk up to their matrix and once the distance sensor detects their presence, the messages will be scolled across the matrix. The system is bidirectional i.e either party can send and recieve messages, providing a interactive and personalized mode of communication.</p>
       </div>
 
     <hr id='obj'>
@@ -97,21 +97,30 @@
     <hr id='design'>
 
       <div style="text-align:center;">
-              <h2>Design</h2>
+              <h2>Design & Testing</h2>
+              <h3>MQTT</h3>
+              <p style="text-align: left;padding: 0px 30px;">We began the project by working on sending and receiving text from one Pi to another over the internet. Initially, we were going to use TCP sockets to send data, but we quickly realized that there were already a lot of more user-friendly services that can serve as a communication medium. We decided to use Mathworks’s IOT service Thingspeak for sending and receiving messages because of its simplicity and prior experience with the platform. On Thingspeak, you can set up a channel for a project with however many fields necessary (in our case two because there were two people communication) for free that serves as your private address that you can query or send data to. At first we used HTTP GET and POST requests to move data, but while this worked, we realized it would mean constantly polling a certain field on our Thingspeak channel to see if a new message had been sent. Instead, we decided to MQTT which follows a subscriber-publisher model for communication. This way, we could publish a message to a field, which would activate a callback on the other Pi, notifying it of the new message, no extra polling or querying needed. One issue we encountered with MQTT is with the QoS of Thingspeak. When sending a message through MQTT, typically you can specify a Quality of Service for the transmission that defines the  guarantee of whether or not your message will be delivered. Thingspeak only supports a QoS of 1, meaning when we published a message, all that was guaranteed was the message would try to be delivered, not that the message was guaranteed to actually be delivered. This created issues where some messages would not be delivered because of too much network traffic or some other reason. To fix this, we implemented our own delivery checker. After a message is sent to Thingspeak, we polled Thingspeak for the latest message, and if the most recent message was not the message we just sent, we know the delivery failed and to try delivery the message again until it is successful. In the end, using MQTT as a communication protocol was very robust and resource efficient.</p>
+<h3>LED Matrix</h3>
+              <p style="text-align: left;padding: 0px 30px;">After achieving communication between the Pis, we wanted to display the messages on the LED matrix. The biggest challenge with interfacing the matrix was the logic for the matrix is 5V while the Pi’s is 3.3V. Initally we thought we would have to order a hat to step all of the voltages up to 5V, but we later learned that the matrix will register the 3.3V logic just fine despite being a 5V device. This way we could connect the matrix directly to the Pi. To send commands to the matrix, we used Hans Zeller’s rpi-rgb-led-matrix library. The library is written in C++ because the precise timing commands neccessary for the matrix require access to the GPIO registers, which is only possible in C. However, Hans wrote a Python binding for all of the C++ commands, so we could effectivley just use Python to control the matrix, simplifying our code to one language. 
+</p>
+
+<h3>Web App</h3>
+              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+<h3>Sensors</h3>
               <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
       </div>
 
     <hr id='drawings'>
 
       <div style="text-align:center;">
-              <h2>Drawings</h2>
+              <h2>Results</h2>
               <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
       </div>
 
     <hr id='testing'>
 
       <div style="text-align:center;">
-              <h2>Testing</h2>
+              <h2>Conclusion</h2>
               <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
       </div>
 
@@ -158,7 +167,7 @@
       <hr>
       <div style="font-size:18px">
           <h2>References</h2>
-          <a href="https://picamera.readthedocs.io/">PiCamera Document</a><br>
+          <a href="https://github.com/hzeller/rpi-rgb-led-matrix">Pi LED Matrix Library</a><br>
           <a href="http://www.micropik.com/PDF/SG90Servo.pdf">Tower Pro Servo Datasheet</a><br>
           <a href="http://getbootstrap.com/">Bootstrap</a><br>
           <a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a><br>
