@@ -68,21 +68,22 @@
       <hr>
       <div class="center-block">
           <iframe width="640" height="360" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
-          <h4 style="text-align:center;">Demonstration Video</h4>
+          <h4 style="text-align:center;">Our project uses a web server to allow friends to send short messages to be displayed on a interactive LED matrix dashboard. </h4>
       </div>
 
       <hr id="intro">
 
       <div style="text-align:center;">
               <h2>Introduction</h2>
-              <p style="text-align: left;padding: 0px 30px;">This project consits of two nearly identical hardware set-ups each located in a different physcial house. Each set up includes one Raspberry Pi 3, one RGB LED matrix, and one distance sensor. The system starts by a user visiting a web page on there browser created with Flask web server and hosted by the Pi on their home network (Fig 1). The web page invites the user to submit a message to be sent to their friend’s LED matrix. The friend’s matrix recieves the message through a MQTT channel hosted by the cloud IOT service Thingspeak. Once the message is downloaded to the friend’s Pi, their matrix displays a notification indicator, signaling to the user that they have unread messages. To display the messages, the user can walk up to their matrix and once the distance sensor detects their presence, the messages will be scolled across the matrix. The system is bidirectional i.e either party can send and recieve messages, providing a interactive and personalized mode of communication.</p>
+              <p style="text-align: left;padding: 0px 30px;">This project consits of two nearly identical hardware set-ups each located in a different physical house. Each set up includes one Raspberry Pi 3, one RGB LED matrix, and one distance sensor. The system starts by a user visiting a web page on there browser created with Flask web server and hosted by the Pi on their home network (Fig 1). The web page invites the user to submit a message to be sent to their friend’s LED matrix. The friend’s matrix receives the message through a MQTT channel hosted by the cloud IOT service Thingspeak. Once the message is downloaded to the friend’s Pi, their matrix displays a notification indicator, signaling to the user that they have unread messages. To display the messages, the user can walk up to their matrix and once the distance sensor detects their presence, the messages will be scrolled across the matrix. The system is bidirectional i.e either party can send and receive messages, providing a interactive and personalized mode of communication.</p>
       </div>
 
     <hr id='obj'>
 
       <div class="row">
           <div class="col-md-4" style="text-align:center;">
-          <img class="img-rounded" src="pics/1.jpg" alt="Generic placeholder image" width="240" height="240">
+          <img class="img-rounded" src="pics/hey.png" alt="Generic placeholder image" width="240" height="240">
+          <img class="img-rounded" src="pics/website.png" alt="Generic placeholder image" width="240" height="240">
           </div>
           <div class="col-md-8" style="font-size:18px;">
           <h2>Project Objective:</h2>
